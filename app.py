@@ -157,7 +157,7 @@ def handle_message(event):
         message = user_register_flow(user_row, user_col, user_status, userID, userSend)
 
     elif user_status == '已註冊':
-        if (userSend in ['hi', 'woo']):
+        if userSend == 'hi' :
             message = TextSendMessage(text='i see u ')
         elif userSend in ['music','音樂','Music']:
             message = TemplateSendMessage(
