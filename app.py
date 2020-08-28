@@ -101,6 +101,14 @@ def user_register_flow(user_row, user_col, user_status, userID, userSend):
             message = TextSendMessage(text='認證錯誤，請重新認證碼')
     return message
 
+def a():
+    a = ['', '' ,'' ,'' ]
+    a[0] = '戴苡柔 社長兼行政   ID 妮'
+    a[1] = '孔文琪 副社長兼活動 ID 米奇'
+    a[2] = '彭歆茹 公關長兼美宣 ID 向日'
+    a[3] = '孫偉翔 總務長  ID永仁蘇智傑'
+    return a[random.randint(0, 4)]
+
 @app.route("/callback", methods=['POST'])
 def callback():
     signature = request.headers['X-Line-Signature']
@@ -143,7 +151,10 @@ def handle_postback_message(event):
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     userSend = event.message.text
-    message = TextSendMessage(text='聽不懂')
+    if (userSend in ['music', 'm']):
+        message = TextSendMessage(text=m)
+    else:
+        message = TextSendMessage(text=a())
     line_bot_api.reply_message(event.reply_token, message)
 # def handle_message(event):
 #     user_row, user_col, user_status, userID = get_user_info_from_gsheet(event)
