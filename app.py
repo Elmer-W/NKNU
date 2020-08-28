@@ -12,9 +12,9 @@ from function.weather_monitor import get_weather_info_by_geo
 import json
 # import twder
 import re
-import gspread
-from oauth2client.service_account import ServiceAccountCredentials
-from function.email_cer import send_certification_letter
+# import gspread
+# from oauth2client.service_account import ServiceAccountCredentials
+# from function.email_cer import send_certification_letter
 import random
 import os
 
