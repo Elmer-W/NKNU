@@ -6,11 +6,11 @@ import configparser
 from function.AQI_monitor import get_AQI_info_by_geo
 from function.radiation_monitor import get_radiation_info_by_geo
 from function.weather_monitor import get_weather_info_by_geo
-from function.spotify_top_200 import spotify_random
-from function.astro import *
-from function.bus_route import *
+# from function.spotify_top_200 import spotify_random
+# from function.astro import *
+# from function.bus_route import *
 import json
-import twder
+# import twder
 import re
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
