@@ -141,7 +141,7 @@ def handle_postback_message(event):
 
 
 @handler.add(MessageEvent, message=TextMessage)
- def handle_message(event):
+def handle_message(event):
     userSend = event.message.text
     message = TextSendMessage(text='聽不懂')
     line_bot_api.reply_message(event.reply_token, message)
