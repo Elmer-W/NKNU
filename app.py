@@ -12,9 +12,9 @@ from function.weather_monitor import get_weather_info_by_geo
 import json
 # import twder
 import re
-# import gspread
-# from oauth2client.service_account import ServiceAccountCredentials
-# from function.email_cer import send_certification_letter
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+from function.email_cer import send_certification_letter
 import random
 import os
 
@@ -23,12 +23,12 @@ config = configparser.ConfigParser()
 config.read('config.ini')
 access_token = config['LINE']['ACCESS_TOKEN']
 secret = config['LINE']['SECRET']
-# scope=['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive']
-# creds = ServiceAccountCredentials.from_json_keyfile_name('HP2020DEMO-a85244012f28.json',scope)
-# client = gspread.authorize(creds)
-# spreadSheet = client.open('HP2020LINEBOT')
-# workSheet_user = spreadSheet.worksheet('user')
-# workSheet_status = spreadSheet.worksheet('status')
+scope=['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive']
+creds = ServiceAccountCredentials.from_json_keyfile_name('jovial-honor-286910-9429f55d86e6.json',scope)
+client = gspread.authorize(creds)
+spreadSheet = client.open('HP2020LINEBOT')
+workSheet_user = spreadSheet.worksheet('user')
+workSheet_status = spreadSheet.worksheet('status')
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
@@ -150,32 +150,27 @@ def handle_postback_message(event):
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
+    user_row, user_col, user_status, userID = get_user_info_from_gsheet(event)
     userSend = event.message.text
-    if (userSend in ['hi', 'woo']):
-        message = TextSendMessage(text='i see u ')
-    else:
-        message = TextSendMessage(text=a())
+    if user_status != '已註冊':
+        message = user_register_flow(user_row, user_col, user_status, userID, userSend)
+
+    elif user_status == '已註冊':
+        if (userSend in ['hi', 'woo']):
+            message = TextSendMessage(text='i see u ')
+        elif userSend in ['music','音樂','Music']:
+            message = TemplateSendMessage(
+                    alt_text='隨機從Spotify top 200 取10首歌',
+                    template=CarouselTemplate(
+                        columns=spotify_random()
+                    )
+                )
+        elif userSend in ['astro','星座','運勢','星座運勢']:
+            message = create_quick_replyButtons()
+
+        else:
+            message = TextSendMessage(text=a())
     line_bot_api.reply_message(event.reply_token, message)
-# def handle_message(event):
-#     user_row, user_col, user_status, userID = get_user_info_from_gsheet(event)
-#     userSend = event.message.text
-#     if user_status != '已註冊':
-#         message = user_register_flow(user_row, user_col, user_status, userID, userSend)
-
-#     elif user_status == '已註冊':
-#         if userSend in ['music','音樂','Music']:
-#             message = TemplateSendMessage(
-#                     alt_text='隨機從Spotify top 200 取10首歌',
-#                     template=CarouselTemplate(
-#                         columns=spotify_random()
-#                     )
-#                 )
-#         elif userSend in ['astro','星座','運勢','星座運勢']:
-#             message = create_quick_replyButtons()
-
-#         else:
-#             message = TextSendMessage(text='聽不懂')
-#     line_bot_api.reply_message(event.reply_token, message)
 
 @handler.add(MessageEvent, message=StickerMessage)
 def handle_sticker_message(event):
