@@ -107,7 +107,7 @@ def a():
     a[1] = '孔文琪 副社長兼活動 ID 米奇'
     a[2] = '彭歆茹 公關長兼美宣 ID 向日'
     a[3] = '孫偉翔 總務長  ID永仁蘇智傑'
-    return a[random.randint(0, 4)]
+    return a[random.randint(0, 3)]
 
 @app.route("/callback", methods=['POST'])
 def callback():
@@ -152,6 +152,7 @@ def handle_postback_message(event):
 def handle_message(event):
     user_row, user_col, user_status, userID = get_user_info_from_gsheet(event)
     userSend = event.message.text
+
     if user_status != '已註冊':
         message = user_register_flow(user_row, user_col, user_status, userID, userSend)
 
@@ -167,9 +168,8 @@ def handle_message(event):
                 )
         elif userSend in ['astro','星座','運勢','星座運勢']:
             message = create_quick_replyButtons()
-
         else:
-            message = TextSendMessage(text=a())
+            message = TextSendMessage(text=userSend)
     line_bot_api.reply_message(event.reply_token, message)
 
 @handler.add(MessageEvent, message=StickerMessage)
