@@ -14,7 +14,7 @@ import json
 import re
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
-# from function.email_cer import send_certification_letter
+from function.email_cer import send_certification_letter
 import random
 import os
 
