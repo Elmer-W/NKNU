@@ -152,7 +152,7 @@ def handle_postback_message(event):
 def handle_message(event):
     userSend = event.message.text
     if (userSend in ['hi', 'woo']):
-        message = TextSendMessage(userSend)
+        message = TextSendMessage('i see u ')
     else:
         message = TextSendMessage(text=a())
     line_bot_api.reply_message(event.reply_token, message)
