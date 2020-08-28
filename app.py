@@ -16,6 +16,7 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from function.email_cer import send_certification_letter
 import random
+import os
 
 config = configparser.ConfigParser()
 config.read('config.ini')
@@ -189,4 +190,5 @@ def handle_location_message(event):
     line_bot_api.reply_message(event.reply_token, message)
 
 if __name__ == "__main__":
-    app.run(port=5000)
+    port = int(os.environ.get('PORT', 8080))
+    app.run(host='0.0.0.0',port=port)
