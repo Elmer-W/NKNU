@@ -10,7 +10,7 @@ from function.weather_monitor import get_weather_info_by_geo
 # from function.astro import *
 # from function.bus_route import *
 import json
-# import twder
+import twder
 import re
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
